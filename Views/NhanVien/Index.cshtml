@@ -1,0 +1,457 @@
+﻿@using QuanLyGaraOto.Models.EF;
+@{
+    ViewBag.Title = "Quản lý nhân viên";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int dem = 1;
+    var lstPhanQuyen = ViewBag.lstPhanQuyen as List<PhanQuyen>;
+}
+@model List<NhanVien>
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Danh sách nhân viên
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="/"><i class="fa fa-dashboard"></i>Trang chủ</a></li>
+            <li><a href="/nhanvien/index">Quản lý nhân viên</a></li>
+            <li class="active">Danh sách nhân viên</li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            @if (TempData["add_success"] != null)
+            {
+                <div class="alert @TempData["alert"] text-center" id="AlertBox">
+                    @TempData["add_success"]
+                </div>
+            }
+        </div>
+        <div class="row">
+            <div class="col-md-4" style="margin-bottom: 10px">
+                <button class="btn btn-lg btn-primary" data-toggle="modal" data-target="#add">Thêm mới </button>
+            </div>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-center text-uppercase" id="exampleModalLabel">Thêm mới nhân viên</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        @using (Html.BeginForm("frmAdd", "NhanVien", FormMethod.Post, new { enctype = "multipart/form-data", id = "frmAdd" }))
+                        {
+                            <div class="form-group col-sm-12">
+                                <label for="recipient-name" class="col-form-label">Tên nhân viên:</label>
+                                <input type="text" name="Ten" class="form-control" required>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="recipient-name" class="col-form-label">Tên đăng nhập:</label>
+                                <input type="text" name="TenDN" class="form-control" required>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="recipient-name" class="col-form-label">Mật khẩu:</label>
+                                <input type="password" name="MatKhau" class="form-control" required>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="recipient-name" class="col-form-label">Quyền:</label>
+                                <select class="form-control" name="IDPhanQuyen">
+                                    @foreach (var item in lstPhanQuyen)
+                                    {
+
+                                        <option value="@item.IDPhanQuyen">@item.ChucVu</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="recipient-name" class="col-form-label">Chức vụ:</label>
+                                <input type="text" name="ChucVu" class="form-control" required placeholder="Nhân viên sửa chữa, kế toán,...">
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="recipient-name" class="col-form-label">Lương cứng:</label>
+                                <input type="number" min="5000000" name="Luong" class="form-control" required>
+                            </div>
+                            @*<div class="form-group col-sm-6">
+                                <label>Ngày làm:</label>
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input type="text" class="form-control datepicker" name="NgayLam">
+                                </div>
+                            </div>*@
+                            <div class="form-group col-sm-6">
+                                <label for="recipient-name" class="col-form-label">Số CMND:</label>
+                                <input type="text" name="CMND" class="form-control" required>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="recipient-name" class="col-form-label">Số điện thoại:</label>
+                                <input type="text" name="SDT" class="form-control" required>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="recipient-name" class="col-form-label">Địa chỉ:</label>
+                                <input type="text" name="DiaChi" class="form-control" required>
+                            </div>
+
+                            <div class="form-group text-center">
+                                <button type="submit" class="btn btn-primary btn-lg">Thêm mới</button>
+                            </div>
+                        }
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title"></h3>
+                    </div><!-- /.box-header -->
+                    <div class="box-body">
+                        <table id="tblData" class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">#</th>
+                                    <th class="text-center">Tên nhân viên</th>
+                                    <th class="text-center">Thông tin</th>
+                                    <th class="text-center">Quyền nhân viên</th>
+                                    <th class="text-center">Chức vụ / lương</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+
+                                    <tr>
+                                        <td class="text-center">@dem</td>
+                                        <td class="text-center">@item.Ten</td>
+                                        <td>
+                                            <p>Số CMND: <b>@item.CMND</b> &ensp; Số ĐT: <b>@item.SDT</b></p>
+                                            <p>Địa chỉ: <b>@item.DiaChi</b></p>
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="label label-@(item.IDPhanQuyen==1 ? "primary": "warning")">@item.PhanQuyen.ChucVu</span>
+                                        </td>
+                                         <td>
+                                            <p>Chức vụ: <b>@item.ChucVu</b></p>
+                                            <p>Lương cứng: <b>@item.Luong.Value.ToString("N0")</b></p>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-default btnEdit" data-id="@item.IDTK" title="Cập nhật nhân viên"><i class="fa fa-edit"></i></button>
+                                            <button class="btn btn-danger btnDelete" data-id="@item.IDTK" title="Xóa nhân viên"><i class="fa fa-remove"></i></button>
+                                        </td>
+                                    </tr>
+                                    dem++;
+                                }
+
+                            </tbody>
+
+                        </table>
+                    </div><!-- /.box-body -->
+                </div><!-- /.box -->
+
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </section><!-- /.content -->
+</div>
+<!-- Modal -->
+<div class="modal fade edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center text-uppercase" id="exampleModalLabel">Cập nhật nhân viên</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm("frmEdit", "NhanVien", FormMethod.Post, new { enctype = "multipart/form-data", id = "frmEdit" }))
+                {
+                    <input type="hidden" name="IDTK" id="IDTK" />
+                    <input type="hidden" name="ID_NhanVien" id="ID_NhanVien" />
+                    <div class="form-group col-sm-12">
+                        <label for="recipient-name" class="col-form-label">Tên nhân viên:</label>
+                        <input type="text" name="Ten" id="Ten" class="form-control" required>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label for="recipient-name" class="col-form-label">Quyền:</label>
+                        <select class="form-control" name="IDPhanQuyen" id="IDPhanQuyen">
+                            <option value="">---Chọn quyền---</option>
+                            @foreach (var item in lstPhanQuyen)
+                            {
+
+                                <option value="@item.IDPhanQuyen">@item.ChucVu</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label for="recipient-name" class="col-form-label">Chức vụ:</label>
+                        <input type="text" name="ChucVu" id="ChucVu" class="form-control" required placeholder="Nhân viên sửa chữa, kế toán,...">
+                    </div>
+
+                    <div class="form-group col-sm-6">
+                        <label for="recipient-name" class="col-form-label">Lương cứng:</label>
+                        <input type="number" min="5000000" name="Luong" id="Luong" class="form-control" required>
+                    </div>
+                    @*<div class="form-group col-sm-6">
+                        <label for="recipient-name" class="col-form-label">Ngày làm:</label>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input type="text" class="form-control datepicker" name="NgayLam" id="NgayLam">
+                        </div>
+                    </div>*@
+                    <div class="form-group col-sm-6">
+                        <label for="recipient-name" class="col-form-label">Số CMND:</label>
+                        <input type="text" name="CMND" id="CMND" class="form-control" required>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label for="recipient-name" class="col-form-label">Số điện thoại:</label>
+                        <input type="text" name="SDT" id="SDT" class="form-control" required>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label for="recipient-name" class="col-form-label">Địa chỉ:</label>
+                        <input type="text" name="DiaChi" id="DiaChi" class="form-control" required>
+                    </div>
+
+
+                    <div class="form-group text-center">
+                        <button type="submit" class="btn btn-primary btn-lg">Cập nhật</button>
+                    </div>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section jsSection{
+
+    <script>
+        $(function () {
+
+            $('.datepicker').datepicker({
+                todayHighlight: true,
+                format: 'dd-mm-yyyy',
+                //language: 'vi',
+                //startDate: '+1d',
+                autoclose: true
+            });
+
+
+            $("#tblData").DataTable();
+            //nếu không có thao tác gì thì ẩn đi
+            $('#AlertBox').removeClass('hide');
+
+            //Sau khi hiển thị lên thì delay 1s và cuộn lên trên sử dụng slideup
+            $('#AlertBox').delay(2000).slideUp(500);
+
+            $.validator.addMethod("select_validate", function (value, element, arg) {
+                return arg !== value;
+            }, "Value must not equal arg.");
+
+             jQuery.validator.addMethod("phonenu", function (value, element) {
+                if (/^(09[0-9]|07[0|6|7|8|9]|03[2-9]|08[1-5])+([0-9]{7})\b/g.test(value)) {
+                    return true;
+                } else {
+                    return false;
+                };
+             }, "Invalid phone number");
+
+           
+
+            //Khi bàn phím được nhấn và thả ra thì sẽ chạy phương thức này
+            $("#frmAdd").validate({
+                rules: {
+                    Ten: "required",
+                    DiaChi: "required",
+                    TenDN: "required",
+                    MatKhau: "required",
+                    ChucVu: "required",
+                    NgayLam: "required",
+                    SDT: {
+                        required: true,
+                        phonenu: true
+                    },
+                    CMND: {
+                        required: true,
+                        number: true,
+                        minlength: 12,
+                        maxlength: 12
+                    },
+                    Luong: {
+                        required: true,
+                        number: true,
+                        min: 5000000
+                    },
+                    IDPhanQuyen: { select_validate: "" }
+                },
+                messages: {
+                    Ten: "Vui lòng nhập tên nhân viên",
+                    DiaChi: "Vui lòng nhập địa chỉ",
+                    TenDN: "Vui lòng nhập tên đăng nhập",
+                    MatKhau: "Vui lòng nhập mật khẩu",
+                    ChucVu: "Vui lòng nhập chức vụ",
+                    NgayLam: "Vui lòng nhập ngày bắt đầu làm việc",
+                    SDT: {
+                        required: "Vui lòng nhập số điện thoại",
+                        phonenu: "Số điện thoại không hợp lệ"
+                    },
+                    CMND: {
+                        required: "Vui lòng nhập số CMND",
+                        number: "Vui lòng nhập số CMND",
+                        minlength: "Tối thiểu 12 số",
+                        maxlength: "Tối đa 12 chữ số"
+                    },
+                    Luong: {
+                        required: "Vui lòng nhập lương cứng",
+                        number: "Vui lòng nhập số",
+                        min: "Lương cứng nhỏ nhât 5.000.000 đ"
+                    },
+                    IDPhanQuyen: { select_validate: "Bạn chưa chọn quyền nhân viên!" }
+                }
+            });
+
+            $("#frmEdit").validate({
+                rules: {
+                    Ten: "required",
+                    DiaChi: "required",
+                    ChucVu: "required",
+                    NgayLam: "required",
+                    SDT: {
+                        required: true,
+                        phonenu: true
+                    },
+                    CMND: {
+                        required: true,
+                        number: true,
+                        minlength: 12,
+                        maxlength: 12
+                    },
+                    Luong: {
+                        required: true,
+                        number: true,
+                        min: 5000000
+                    },
+                    IDPhanQuyen: { select_validate: "" }
+                },
+                messages: {
+                    Ten: "Vui lòng nhập tên nhân viên",
+                    DiaChi: "Vui lòng nhập địa chỉ",
+                    ChucVu: "Vui lòng nhập chức vụ",
+                    NgayLam: "Vui lòng nhập ngày bắt đầu làm việc",
+                    SDT: {
+                        required: "Vui lòng nhập số điện thoại",
+                        phonenu: "Số điện thoại không hợp lệ"
+                    },
+                    CMND: {
+                        required: "Vui lòng nhập số CMND",
+                        number: "Vui lòng nhập số CMND",
+                        minlength: "Tối thiểu 12 số",
+                        maxlength: "Tối đa 12 chữ số"
+                    },
+                    Luong: {
+                        required: "Vui lòng nhập lương cứng",
+                        number: "Vui lòng nhập số",
+                        min: "Lương cứng nhỏ nhât 5.000.000 đ"
+                    },
+                    IDPhanQuyen: { select_validate: "Bạn chưa chọn quyền nhân viên!" }
+                }
+            });
+
+            $('.btnDelete').off('click').on('click', function () {
+
+                const notice = PNotify.notice({
+                    title: 'Thông báo',
+                    text: 'Bạn thật sự muốn xóa?',
+                    icon: 'fa fa-question-circle',
+                    width: '360px',
+                    minHeight: '110px',
+                    hide: false,
+                    closer: false,
+                    sticker: false,
+                    destroy: true,
+                    stack: new PNotify.Stack({
+                        dir1: 'down',
+                        modal: true,
+                        firstpos1: 25,
+                        overlayClose: false
+                    }),
+                    modules: new Map([
+                        ...PNotify.defaultModules,
+                        [PNotifyConfirm, {
+                            confirm: true
+                        }]
+                    ])
+                });
+
+                notice.on('pnotify:confirm', () =>
+                    $.ajax({
+                        data: { ID: $(this).data('id') },
+                        url: '/NhanVien/Delete',
+                        dataType: 'Json',
+                        type: 'POST',
+                        success: function (res) {
+                            if (res.status == true) {
+                                PNotify.success({
+                                    title: 'THÔNG BÁO!!',
+                                    text: 'Xóa nhân viên thành công.'
+                                });
+                                 setTimeout(function () {
+                                    window.location.href = "/nhanvien/index";
+                                }, 2000);
+                            } else {
+                                PNotify.error({
+                                    title: 'THÔNG BÁO!!',
+                                    text: 'Xóa nhân viên KHÔNG thành công.'
+                                });
+                            }
+                        }
+                    })
+
+                );
+                //notice.on('pnotify:cancel', () => alert('Oh ok. Chicken, I see.'));
+
+            });
+
+            $('.btnEdit').click(function (event) {
+                $('.edit').modal('show');
+                //alert($(this).data('id'));
+                var ID = $(this).data('id');
+                $.ajax({
+                    url: "/nhanvien/GetByID/" + ID,
+                    type: 'GET',
+                    dataType: 'json',
+                    contentType: "application/json; charset=utf-8",
+                    success: function (res) {
+                        $('#SDT').val(res.SDT);
+                        $('#ChucVu').val(res.ChucVu);
+                        $('#Luong').val(res.Luong);
+                        //$('#NgayLam').val(res.NgayLam);
+                        $('#DiaChi').val(res.DiaChi);
+                        $('#CMND').val(res.CMND.trim());
+                        $('#Ten').val(res.Ten);
+                        $('#IDTK').val(res.IDTK);
+                        $('select#IDPhanQuyen').val(res.IDPhanQuyen);
+                    }
+                });
+            });
+        });
+
+    </script>
+
+}

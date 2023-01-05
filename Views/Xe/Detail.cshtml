@@ -1,0 +1,403 @@
+﻿@using QuanLyGaraOto.Models.EF;
+@{
+    ViewBag.Title = "Phiếu sửa chữa";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int dem = 1;
+    var lstVTPT = ViewBag.lstVTPT as List<VTPT>;
+    var tn_xe = ViewBag.TiepNhanXe as TiepNhanXe;
+    var lstTienCong = ViewBag.lstTienCong as List<TienCong>;
+    var lstCTPSC = ViewBag.CTPhieuSuaChua as List<ChiTietPSC>;
+    float sotienthu = 0;
+    var psc = ViewBag.PSC as PhieuSuaChua;
+}
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Phiếu sửa chữa
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="/"><i class="fa fa-dashboard"></i>Trang chủ</a></li>
+            <li><a href="/xe/index">Tiếp nhận xe</a></li>
+            <li class="active">Sửa chữa</li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            @if (TempData["add_success"] != null)
+            {
+                <div class="alert alert-success text-center" id="AlertBox">
+                    @TempData["add_success"]
+                </div>
+            }
+        </div>
+        <div class="row">
+            <div class="box">
+                <div class="box-body">
+                    <table class="table table-bordered table-hover">
+                        <tbody>
+                            <tr>
+                                <td colspan="3" class="text-center text-uppercase" style="font-size: 18px;">Tiếp nhận xe sửa</td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" class="text-center text-uppercase" style="font-size: 18px;">Nhân viên sửa chữa: <b>@psc.NhanVien.Ten</b></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Tên chủ xe: <b>@tn_xe.Xe.TenChuXe</b>
+                                </td>
+                                <td>
+                                    Biển số: <b>@tn_xe.Xe.BienSo</b>
+                                </td>
+                                <td>
+                                    Hiệu xe: <b>@tn_xe.Xe.HieuXe.HieuXe1</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Địa chỉ: <b>@tn_xe.Xe.DiaChi</b>
+                                </td>
+                                <td>
+                                    Điện thoại: <b>@tn_xe.Xe.SDT</b>
+                                </td>
+                                <td>
+                                    Ngày tiếp nhận: <b>@tn_xe.NgayTiepNhan.ToString("dd/MM/yyyy")</b>
+                                </td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->
+        </div>
+        @if (tn_xe.TrangThai != 2)
+        {
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Thêm nội dung sửa chữa, vật tư & phụ tùng thay thế
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <form action="" method="get">
+                                        <input type="hidden" name="IDXe" id="IDXe" value="@tn_xe.IDXe" />
+                                        <input type="hidden" name="IDPSC" id="IDPSC" value="@psc.IDPSC" />
+                                        <div class="form-group col-md-4">
+                                            <label>Tên vật tư & phụ tùng</label>
+                                            <select class="form-control select2" name="IDVTPT" id="IDVTPT">
+                                                <option value="">---Chọn---</option>
+                                                @foreach (var item in lstVTPT)
+                                                {
+                                                    <option value="@item.IDVTPT" id="@item.IDVTPT" data-soluong="@item.SoLuongTon">
+                                                        @item.Ten  (@item.SoLuongTon)
+                                                    </option>
+                                                }
+                                            </select>
+                                            <label class="error"></label>
+                                        </div>
+                                        <div class="form-group col-md-2">
+                                            <label>Số lượng</label>
+                                            <input type="number" class="form-control" name="SoLuong" id="SoLuong" placeholder="Nhập số lượng" min="1" value="1">
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label>Nội dung sửa chữa</label>
+                                            <select class="form-control select2" name="IDTienCong" id="IDTienCong">
+                                                <option value="">---Chọn---</option>
+                                                @foreach (var item in lstTienCong)
+                                                {
+                                                    <option value="@item.IDTienCong">@item.NoiDung</option>
+                                                }
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2" style="margin-top: 24px;">
+                                            <button type="button" class="btn btn-default" id="btnAdd_PSC">Thêm</button>
+                                        </div>
+                                    </form>
+                                </div>
+
+                            </div>
+                            <!-- /.row (nested) -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+            </div>
+        }
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header text-center">
+                    <h3 class="box-title text-uppercase">Phiếu sửa chữa</h3>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th colspan="4" class="text-center">
+                                    Biển số xe: <b>@tn_xe.Xe.BienSo</b>
+                                </th>
+                                <th colspan="3" class="text-center">
+                                    Ngày sửa chữa: <b>@(psc != null ? psc.NgaySuaChua.ToString("dd/MM/yyyy") : DateTime.Now.ToString("dd/MM/yyyy"))</b>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th class="text-center">STT</th>
+                                <th class="text-center">Nội dung</th>
+                                <th class="text-center">Vật tư phụ tùng</th>
+                                <th class="text-center">Số lượng</th>
+                                <th class="text-center">Đơn giá (đ)</th>
+                                <th class="text-center">Tiền công (đ)</th>
+                                <th class="text-center">Thành tiền (đ)</th>
+                                <th class="text-center"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (psc != null)
+                            {
+                                foreach (var item in lstCTPSC.Where(x => x.IDPSC == psc.IDPSC))
+                                {
+                                    var thanhtien = item.SoLuong * item.VTPT.DonGia + item.TienCong.TienCong1;
+                                    sotienthu += (float)thanhtien;
+                                    <tr>
+                                        <td class="text-center">@dem</td>
+                                        <td class="text-center">@item.TienCong.NoiDung</td>
+                                        <td class="text-center">
+                                            @item.VTPT.Ten
+                                        </td>
+                                        <td class="text-center">
+                                            <input type="number" class="form-control text-center" id="soluong_@item.IDCTPSC" min="1" max="@item.VTPT.SoLuongTon" value="@item.SoLuong" />
+                                        </td>
+                                        <td class="text-center">
+                                            @item.VTPT.DonGia.ToString("N0")
+                                        </td>
+                                        <td class="text-center">
+                                            @item.TienCong.TienCong1.ToString("N0")
+                                        </td>
+                                        <td class="text-center">
+                                            @thanhtien.ToString("N0")
+                                        </td>
+                                        @if (tn_xe.TrangThai != 2)
+                                        {
+                                            <td class="text-center">
+                                                <button class="btn btn-primary Edit_PSC" data-id="@item.IDCTPSC" title="Sửa số lượng"><i class="fa fa-pencil-square-o"></i></button>
+                                                <button class="btn btn-danger Delete_PSC" data-id="@item.IDCTPSC" title="Xóa"><i class="fa fa-times"></i></button>
+                                            </td>
+                                        }
+
+                                    </tr>
+                                    dem++;
+
+                                }
+                                <tr>
+                                    <td colspan="5"></td>
+                                    <td class="text-right" style="font-size: 20px; font-weight: bold">Tổng tiền (vnđ): </td>
+                                    <td class="text-center" style="color: red; font-size: 20px; font-weight: bold">@sotienthu.ToString("N0")</td>
+                                </tr>
+                            }
+
+                        </tbody>
+
+                    </table>
+
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->
+
+        </div><!-- /.col -->
+
+
+
+        @if (sotienthu != 0)
+        {
+            <div class="col-xs-12">
+                <div class="col-xs-12 text-center">
+
+                    @using (Html.BeginForm("frmPhieuThuTien", "Xe", FormMethod.Post))
+                    {
+                        <input type="hidden" name="IDXe" value="@tn_xe.IDXe" />
+                        <input type="hidden" name="SoTienThu" value="@sotienthu" />
+                        <a href="/xe/print/@tn_xe.IDTN" class="btn btn-lg btn-default" style="margin-right: 5px;"><i class="fa fa-print fa-fw"></i> In hóa đơn</a>
+                        if (tn_xe.TrangThai != 2)
+                        {
+                            <button type="submit" class="btn btn-primary btn-lg"><i class="fa fa-credit-card fa-fw"></i>Thanh toán</button>
+                        }
+                    }
+                </div>
+            </div><!-- /.col -->
+        }
+
+    </div><!-- /.row -->
+    </section><!-- /.content -->
+</div>
+
+@section jsSection{
+
+    <script>
+        $(function () {
+            $(".select2").select2();
+            //$("#tblData_1").DataTable();
+            //$("#tblData_2").DataTable();
+            //nếu không có thao tác gì thì ẩn đi
+            $('#AlertBox').removeClass('hide');
+
+            //Sau khi hiển thị lên thì delay 1s và cuộn lên trên sử dụng slideup
+            $('#AlertBox').delay(2000).slideUp(500);
+
+            //$('#btnPhieuThu').click(function () {
+            //    $('#PhieuThuTien').removeClass('hide');
+            //    $('footer').animate({ scrollTo: "-200" }, 400);
+            //    $(this).parent().addClass('hide');
+            //});
+
+            $('#IDVTPT').change(function () {
+                var id = this.value;
+                var value = $('#' + id).data('soluong');
+                console.log(value);
+                if (value == 0) {
+                    $("button#btnAdd_PSC").attr("disabled", "disabled");
+                    $('.error').text('Vật tư phụ tùng đã hết');
+                } else {
+                    $("button#btnAdd_PSC").removeAttr("disabled");
+                    $('.error').text('');
+                }
+            });
+
+            $("#btnAdd_PSC").click(function () {
+                var IDPSC = $('#IDPSC').val();
+                var IDVTPT = $('#IDVTPT').val();
+                var SoLuong = $('#SoLuong').val();
+                var IDTienCong = $('#IDTienCong').val();
+                var IDXe = $('#IDXe').val();
+                var IDTN = @tn_xe.IDTN;
+
+                if (IDVTPT == "" || IDTienCong == "") {
+                    PNotify.error({
+                        title: 'THÔNG BÁO!!',
+                        text: 'Bạn vui lòng chọn vật tư phụ tùng và nội dung sửa chũa.'
+                    });
+                    return;
+                }
+
+                var json_str = [];
+                json_str.push({
+                    IDPSC: IDPSC,
+                    IDXe: IDXe,
+                    IDVTPT: IDVTPT,
+                    SoLuong: SoLuong,
+                    IDTienCong: IDTienCong,
+                    IDTN: IDTN
+                });
+                console.log(json_str);
+                $.ajax({
+                    url: '/Xe/addPSC',
+                    data: { json_str: JSON.stringify(json_str) },
+                    dataType: 'json',
+                    type: 'POST',
+                    success: function (res) {
+                        if (res.status == true) {
+                            window.location.href = "/xe/detail/" + @tn_xe.IDTN;
+                            PNotify.success({
+                                title: 'THÔNG BÁO!!',
+                                text: 'Thêm thành công.'
+                            });
+                        } else {
+                             PNotify.error({
+                                title: 'THÔNG BÁO!!',
+                                text: 'Thêm KHÔNG thành công.'
+                            });
+                        }
+                    }
+                });
+            });
+
+            $(".Edit_PSC").click(function () {
+                var IDPSC = $(this).data('id');
+                var SoLuong = $('#soluong_' + IDPSC).val();
+
+                 $.ajax({
+                     data: {
+                         IDPSC: IDPSC,
+                         SoLuong: SoLuong
+                     },
+                    url: '/Xe/Edit_CTPSC',
+                    dataType: 'Json',
+                    type: 'POST',
+                    success: function (res) {
+                        if (res.status == true) {
+                            window.location.href = "/xe/detail/" + @tn_xe.IDTN;
+                            PNotify.success({
+                                title: 'THÔNG BÁO!!',
+                                text: 'Sửa số lượng thành công.'
+                            });
+                        } else {
+                             PNotify.error({
+                                title: 'THÔNG BÁO!!',
+                                text: 'Thêm số lượng KHÔNG thành công.'
+                            });
+                        }
+                    }
+                });
+             });
+
+             $('.Delete_PSC').off('click').on('click', function () {
+                 const notice = PNotify.notice({
+                    title: 'Thông báo',
+                    text: 'Bạn thật sự muốn xóa?',
+                    icon: 'fa fa-question-circle',
+                    width: '360px',
+                    minHeight: '110px',
+                    hide: false,
+                    closer: false,
+                    sticker: false,
+                    destroy: true,
+                    stack: new PNotify.Stack({
+                        dir1: 'down',
+                        modal: true,
+                        firstpos1: 25,
+                        overlayClose: false
+                    }),
+                    modules: new Map([
+                        ...PNotify.defaultModules,
+                        [PNotifyConfirm, {
+                            confirm: true
+                        }]
+                    ])
+                });
+
+                notice.on('pnotify:confirm', () =>
+                    $.ajax({
+                    data: { IDPSC: $(this).data('id') },
+                    url: '/Xe/Delete_CTPSC',
+                    dataType: 'Json',
+                    type: 'POST',
+                         success: function (res) {
+                            if (res.status == true) {
+                                window.location.href = "/xe/detail/" + @tn_xe.IDTN;
+                                PNotify.success({
+                                    title: 'THÔNG BÁO!!',
+                                    text: 'Xóa thành công.'
+                                });
+                            } else {
+                                 PNotify.error({
+                                    title: 'THÔNG BÁO!!',
+                                    text: 'Xóa thành công.'
+                                });
+                            }
+                        }
+                    })
+
+                );
+
+            });
+        });
+
+    </script>
+
+}

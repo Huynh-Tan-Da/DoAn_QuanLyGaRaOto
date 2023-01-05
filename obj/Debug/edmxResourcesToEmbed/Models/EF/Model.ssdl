@@ -1,0 +1,427 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="AutoGaraModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="ChiTietPSC">
+    <Key>
+      <PropertyRef Name="IDCTPSC" />
+    </Key>
+    <Property Name="IDCTPSC" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="IDPSC" Type="int" Nullable="false" />
+    <Property Name="IDVTPT" Type="int" Nullable="false" />
+    <Property Name="IDTienCong" Type="int" Nullable="false" />
+    <Property Name="SoLuong" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CTPhieuNhap">
+    <Key>
+      <PropertyRef Name="IDPN" />
+      <PropertyRef Name="IDVTPT" />
+    </Key>
+    <Property Name="IDPN" Type="int" Nullable="false" />
+    <Property Name="IDVTPT" Type="int" Nullable="false" />
+    <Property Name="SoLuong" Type="int" Nullable="false" />
+    <Property Name="DonGiaNhap" Type="money" Nullable="false" />
+    <Property Name="TonKho" Type="int" />
+  </EntityType>
+  <EntityType Name="HieuXe">
+    <Key>
+      <PropertyRef Name="IDHieuXe" />
+    </Key>
+    <Property Name="IDHieuXe" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="HieuXe" Type="nchar" MaxLength="20" Nullable="false" />
+  </EntityType>
+  <EntityType Name="LienHe">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="HoTen" Type="nvarchar" MaxLength="250" />
+    <Property Name="SDT" Type="nchar" MaxLength="20" />
+    <Property Name="Email" Type="nvarchar" MaxLength="50" />
+    <Property Name="NgayDat" Type="datetime" />
+    <Property Name="NoiDung" Type="nvarchar" MaxLength="450" />
+    <Property Name="NgayLH" Type="datetime" />
+    <Property Name="TrangThai" Type="bit" />
+  </EntityType>
+  <EntityType Name="NhaCungCap">
+    <Key>
+      <PropertyRef Name="IDNCC" />
+    </Key>
+    <Property Name="IDNCC" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Ten" Type="nvarchar" MaxLength="30" Nullable="false" />
+  </EntityType>
+  <EntityType Name="NhanVien">
+    <Key>
+      <PropertyRef Name="IDTK" />
+    </Key>
+    <Property Name="IDTK" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TenDN" Type="nvarchar" MaxLength="30" Nullable="false" />
+    <Property Name="MatKhau" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="IDPhanQuyen" Type="int" Nullable="false" />
+    <Property Name="Ten" Type="nvarchar" MaxLength="30" />
+    <Property Name="CMND" Type="nchar" MaxLength="20" />
+    <Property Name="DiaChi" Type="nvarchar" MaxLength="50" />
+    <Property Name="SDT" Type="char" MaxLength="15" />
+    <Property Name="NgayLam" Type="datetime" />
+    <Property Name="Luong" Type="decimal" Precision="18" Scale="0" />
+    <Property Name="ChucVu" Type="nvarchar" MaxLength="150" />
+  </EntityType>
+  <EntityType Name="PhanQuyen">
+    <Key>
+      <PropertyRef Name="IDPhanQuyen" />
+    </Key>
+    <Property Name="IDPhanQuyen" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ChucVu" Type="nvarchar" MaxLength="20" />
+    <Property Name="ManHinhLoad" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="PhieuNhap">
+    <Key>
+      <PropertyRef Name="IDPN" />
+    </Key>
+    <Property Name="IDPN" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="IDTK" Type="int" Nullable="false" />
+    <Property Name="IDNCC" Type="int" />
+    <Property Name="TongTien" Type="decimal" Precision="18" Scale="0" />
+    <Property Name="TongSL" Type="int" />
+    <Property Name="NgayNhap" Type="date" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PhieuSuaChua">
+    <Key>
+      <PropertyRef Name="IDPSC" />
+    </Key>
+    <Property Name="IDPSC" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="IDXe" Type="int" Nullable="false" />
+    <Property Name="IDTK" Type="int" />
+    <Property Name="NgaySuaChua" Type="date" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PhieuThuTien">
+    <Key>
+      <PropertyRef Name="IDPTT" />
+    </Key>
+    <Property Name="IDPTT" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="IDXe" Type="int" Nullable="false" />
+    <Property Name="NgayThuTien" Type="date" Nullable="false" />
+    <Property Name="SoTienThu" Type="money" Nullable="false" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="TienCong">
+    <Key>
+      <PropertyRef Name="IDTienCong" />
+    </Key>
+    <Property Name="IDTienCong" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="NoiDung" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="TienCong" Type="money" Nullable="false" />
+  </EntityType>
+  <EntityType Name="TiepNhanXe">
+    <Key>
+      <PropertyRef Name="IDTN" />
+    </Key>
+    <Property Name="IDTN" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="IDXe" Type="int" Nullable="false" />
+    <Property Name="IDTK" Type="int" Nullable="false" />
+    <Property Name="NgayTiepNhan" Type="date" Nullable="false" />
+    <Property Name="TrangThai" Type="int" />
+  </EntityType>
+  <EntityType Name="VTPT">
+    <Key>
+      <PropertyRef Name="IDVTPT" />
+    </Key>
+    <Property Name="IDVTPT" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Ten" Type="nvarchar" MaxLength="30" Nullable="false" />
+    <Property Name="SoLuongTon" Type="int" Nullable="false" />
+    <Property Name="DonGia" Type="money" Nullable="false" />
+    <Property Name="BaoHanh" Type="int" />
+  </EntityType>
+  <EntityType Name="Xe">
+    <Key>
+      <PropertyRef Name="IDXe" />
+    </Key>
+    <Property Name="IDXe" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="BienSo" Type="nchar" MaxLength="20" Nullable="false" />
+    <Property Name="IDHieuXe" Type="int" Nullable="false" />
+    <Property Name="TenChuXe" Type="nvarchar" MaxLength="30" Nullable="false" />
+    <Property Name="DiaChi" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="SDT" Type="nchar" MaxLength="20" />
+    <Property Name="Email" Type="nvarchar" MaxLength="50" />
+    <Property Name="TienNo" Type="money" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_ChiTietPSC_PhieuSuaChua">
+    <End Role="PhieuSuaChua" Type="Self.PhieuSuaChua" Multiplicity="1" />
+    <End Role="ChiTietPSC" Type="Self.ChiTietPSC" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PhieuSuaChua">
+        <PropertyRef Name="IDPSC" />
+      </Principal>
+      <Dependent Role="ChiTietPSC">
+        <PropertyRef Name="IDPSC" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ChiTietPSC_TienCong">
+    <End Role="TienCong" Type="Self.TienCong" Multiplicity="1" />
+    <End Role="ChiTietPSC" Type="Self.ChiTietPSC" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TienCong">
+        <PropertyRef Name="IDTienCong" />
+      </Principal>
+      <Dependent Role="ChiTietPSC">
+        <PropertyRef Name="IDTienCong" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ChiTietPSC_VTPT">
+    <End Role="VTPT" Type="Self.VTPT" Multiplicity="1" />
+    <End Role="ChiTietPSC" Type="Self.ChiTietPSC" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="VTPT">
+        <PropertyRef Name="IDVTPT" />
+      </Principal>
+      <Dependent Role="ChiTietPSC">
+        <PropertyRef Name="IDVTPT" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CTPhieuNhap_PhieuNhap">
+    <End Role="PhieuNhap" Type="Self.PhieuNhap" Multiplicity="1" />
+    <End Role="CTPhieuNhap" Type="Self.CTPhieuNhap" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PhieuNhap">
+        <PropertyRef Name="IDPN" />
+      </Principal>
+      <Dependent Role="CTPhieuNhap">
+        <PropertyRef Name="IDPN" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CTPhieuNhap_VTPT">
+    <End Role="VTPT" Type="Self.VTPT" Multiplicity="1" />
+    <End Role="CTPhieuNhap" Type="Self.CTPhieuNhap" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="VTPT">
+        <PropertyRef Name="IDVTPT" />
+      </Principal>
+      <Dependent Role="CTPhieuNhap">
+        <PropertyRef Name="IDVTPT" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PhieuNhap_NhaCungCap">
+    <End Role="NhaCungCap" Type="Self.NhaCungCap" Multiplicity="0..1" />
+    <End Role="PhieuNhap" Type="Self.PhieuNhap" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="NhaCungCap">
+        <PropertyRef Name="IDNCC" />
+      </Principal>
+      <Dependent Role="PhieuNhap">
+        <PropertyRef Name="IDNCC" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PhieuNhap_TaiKhoanNhanVien">
+    <End Role="NhanVien" Type="Self.NhanVien" Multiplicity="1" />
+    <End Role="PhieuNhap" Type="Self.PhieuNhap" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="NhanVien">
+        <PropertyRef Name="IDTK" />
+      </Principal>
+      <Dependent Role="PhieuNhap">
+        <PropertyRef Name="IDTK" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PhieuSuaChua_NhanVien">
+    <End Role="NhanVien" Type="Self.NhanVien" Multiplicity="0..1" />
+    <End Role="PhieuSuaChua" Type="Self.PhieuSuaChua" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="NhanVien">
+        <PropertyRef Name="IDTK" />
+      </Principal>
+      <Dependent Role="PhieuSuaChua">
+        <PropertyRef Name="IDTK" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PhieuSuaChua_Xe">
+    <End Role="Xe" Type="Self.Xe" Multiplicity="1" />
+    <End Role="PhieuSuaChua" Type="Self.PhieuSuaChua" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Xe">
+        <PropertyRef Name="IDXe" />
+      </Principal>
+      <Dependent Role="PhieuSuaChua">
+        <PropertyRef Name="IDXe" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PhieuThuTien_Xe">
+    <End Role="Xe" Type="Self.Xe" Multiplicity="1" />
+    <End Role="PhieuThuTien" Type="Self.PhieuThuTien" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Xe">
+        <PropertyRef Name="IDXe" />
+      </Principal>
+      <Dependent Role="PhieuThuTien">
+        <PropertyRef Name="IDXe" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TaiKhoanNhanVien_PhanQuyen">
+    <End Role="PhanQuyen" Type="Self.PhanQuyen" Multiplicity="1" />
+    <End Role="NhanVien" Type="Self.NhanVien" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PhanQuyen">
+        <PropertyRef Name="IDPhanQuyen" />
+      </Principal>
+      <Dependent Role="NhanVien">
+        <PropertyRef Name="IDPhanQuyen" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TiepNhanXe_TaiKhoanNhanVien">
+    <End Role="NhanVien" Type="Self.NhanVien" Multiplicity="1" />
+    <End Role="TiepNhanXe" Type="Self.TiepNhanXe" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="NhanVien">
+        <PropertyRef Name="IDTK" />
+      </Principal>
+      <Dependent Role="TiepNhanXe">
+        <PropertyRef Name="IDTK" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TiepNhanXe_Xe">
+    <End Role="Xe" Type="Self.Xe" Multiplicity="1" />
+    <End Role="TiepNhanXe" Type="Self.TiepNhanXe" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Xe">
+        <PropertyRef Name="IDXe" />
+      </Principal>
+      <Dependent Role="TiepNhanXe">
+        <PropertyRef Name="IDXe" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Xe_HieuXe">
+    <End Role="HieuXe" Type="Self.HieuXe" Multiplicity="1" />
+    <End Role="Xe" Type="Self.Xe" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="HieuXe">
+        <PropertyRef Name="IDHieuXe" />
+      </Principal>
+      <Dependent Role="Xe">
+        <PropertyRef Name="IDHieuXe" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+  <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="version" Type="int" Mode="In" />
+    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+  </Function>
+  <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="version" Type="int" Mode="In" />
+    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+  </Function>
+  <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <EntityContainer Name="AutoGaraModelStoreContainer">
+    <EntitySet Name="ChiTietPSC" EntityType="Self.ChiTietPSC" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CTPhieuNhap" EntityType="Self.CTPhieuNhap" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="HieuXe" EntityType="Self.HieuXe" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="LienHe" EntityType="Self.LienHe" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="NhaCungCap" EntityType="Self.NhaCungCap" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="NhanVien" EntityType="Self.NhanVien" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PhanQuyen" EntityType="Self.PhanQuyen" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PhieuNhap" EntityType="Self.PhieuNhap" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PhieuSuaChua" EntityType="Self.PhieuSuaChua" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PhieuThuTien" EntityType="Self.PhieuThuTien" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TienCong" EntityType="Self.TienCong" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TiepNhanXe" EntityType="Self.TiepNhanXe" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="VTPT" EntityType="Self.VTPT" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Xe" EntityType="Self.Xe" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_ChiTietPSC_PhieuSuaChua" Association="Self.FK_ChiTietPSC_PhieuSuaChua">
+      <End Role="PhieuSuaChua" EntitySet="PhieuSuaChua" />
+      <End Role="ChiTietPSC" EntitySet="ChiTietPSC" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ChiTietPSC_TienCong" Association="Self.FK_ChiTietPSC_TienCong">
+      <End Role="TienCong" EntitySet="TienCong" />
+      <End Role="ChiTietPSC" EntitySet="ChiTietPSC" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ChiTietPSC_VTPT" Association="Self.FK_ChiTietPSC_VTPT">
+      <End Role="VTPT" EntitySet="VTPT" />
+      <End Role="ChiTietPSC" EntitySet="ChiTietPSC" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CTPhieuNhap_PhieuNhap" Association="Self.FK_CTPhieuNhap_PhieuNhap">
+      <End Role="PhieuNhap" EntitySet="PhieuNhap" />
+      <End Role="CTPhieuNhap" EntitySet="CTPhieuNhap" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CTPhieuNhap_VTPT" Association="Self.FK_CTPhieuNhap_VTPT">
+      <End Role="VTPT" EntitySet="VTPT" />
+      <End Role="CTPhieuNhap" EntitySet="CTPhieuNhap" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PhieuNhap_NhaCungCap" Association="Self.FK_PhieuNhap_NhaCungCap">
+      <End Role="NhaCungCap" EntitySet="NhaCungCap" />
+      <End Role="PhieuNhap" EntitySet="PhieuNhap" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PhieuNhap_TaiKhoanNhanVien" Association="Self.FK_PhieuNhap_TaiKhoanNhanVien">
+      <End Role="NhanVien" EntitySet="NhanVien" />
+      <End Role="PhieuNhap" EntitySet="PhieuNhap" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PhieuSuaChua_NhanVien" Association="Self.FK_PhieuSuaChua_NhanVien">
+      <End Role="NhanVien" EntitySet="NhanVien" />
+      <End Role="PhieuSuaChua" EntitySet="PhieuSuaChua" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PhieuSuaChua_Xe" Association="Self.FK_PhieuSuaChua_Xe">
+      <End Role="Xe" EntitySet="Xe" />
+      <End Role="PhieuSuaChua" EntitySet="PhieuSuaChua" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PhieuThuTien_Xe" Association="Self.FK_PhieuThuTien_Xe">
+      <End Role="Xe" EntitySet="Xe" />
+      <End Role="PhieuThuTien" EntitySet="PhieuThuTien" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TaiKhoanNhanVien_PhanQuyen" Association="Self.FK_TaiKhoanNhanVien_PhanQuyen">
+      <End Role="PhanQuyen" EntitySet="PhanQuyen" />
+      <End Role="NhanVien" EntitySet="NhanVien" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TiepNhanXe_TaiKhoanNhanVien" Association="Self.FK_TiepNhanXe_TaiKhoanNhanVien">
+      <End Role="NhanVien" EntitySet="NhanVien" />
+      <End Role="TiepNhanXe" EntitySet="TiepNhanXe" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TiepNhanXe_Xe" Association="Self.FK_TiepNhanXe_Xe">
+      <End Role="Xe" EntitySet="Xe" />
+      <End Role="TiepNhanXe" EntitySet="TiepNhanXe" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Xe_HieuXe" Association="Self.FK_Xe_HieuXe">
+      <End Role="HieuXe" EntitySet="HieuXe" />
+      <End Role="Xe" EntitySet="Xe" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

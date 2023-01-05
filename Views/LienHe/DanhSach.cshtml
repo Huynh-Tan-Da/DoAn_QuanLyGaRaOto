@@ -1,0 +1,154 @@
+﻿@using QuanLyGaraOto.Models.EF;
+@{
+    ViewBag.Title = "Quản lý liên hệ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int dem = 1;
+}
+@model List<LienHe>
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Quản lý liên hệ
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="/"><i class="fa fa-dashboard"></i>Trang chủ</a></li>
+            <li class="active">Quản lý liên hệ</li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title"></h3>
+                    </div><!-- /.box-header -->
+                    <div class="box-body">
+                        <table id="tblData" class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">#</th>
+                                    <th class="text-center">Thông tin liên hệ</th>
+                                    <th class="text-center">Ngày đặt lịch</th>
+                                    <th class="text-center">Nội dung liên hệ</th>
+                                    <th class="text-center">Trạng thái</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+
+                                    <tr>
+                                        <td class="text-center">@dem</td>
+                                        <td>
+                                            <b>@item.HoTen</b>
+                                            <p>SĐT: <b>@item.SDT</b>, Email: <b>@item.Email</b></p>
+                                        </td>
+                                        <td>
+                                            <b>@item.NgayDat.Value.ToString("hh:mm")</b>, ngày <b>@item.NgayDat.Value.ToString("dd-MM-yyyy")</b>
+                                        </td>
+                                        <td>
+                                            <p>Ngày liên hệ: <b>@item.NgayLH.Value.ToString("dd-MM-yyyy")</b></p>
+                                            @if (item.NoiDung != null)
+                                            {
+                                                <p>@item.NoiDung</p>
+                                            }
+                                        </td>
+                                        @*<td class="text-center">@item.Xe.TienNo</td>*@
+                                        <td class="text-center">
+                                            @if (item.TrangThai == true)
+                                            {
+                                                <span class="label label-warning">Đã liên hệ</span>
+                                            }
+                                            else if (item.TrangThai == false)
+                                            {
+                                                <button class="btn btn-default btnStatus" data-kh="@item.HoTen" data-id="@item.ID" title="Xác nhận liên hệ">Chưa liên hệ</button>
+                                            }
+                                        </td>
+                                        
+                                    </tr>
+                                    dem++;
+                                }
+
+                            </tbody>
+
+                        </table>
+                    </div><!-- /.box-body -->
+                </div><!-- /.box -->
+
+            </div><!-- /.col -->
+
+
+        </div><!-- /.row -->
+    </section><!-- /.content -->
+</div>
+
+@section jsSection{
+
+    <script>
+        $(function () {
+            $("#tblData").DataTable();
+            //nếu không có thao tác gì thì ẩn đi
+            $('#AlertBox').removeClass('hide');
+
+            //Sau khi hiển thị lên thì delay 1s và cuộn lên trên sử dụng slideup
+            $('#AlertBox').delay(2000).slideUp(500);
+
+            
+            $('.btnStatus').off('click').on('click', function () {
+                var kh = $(this).data('kh');
+                const notice = PNotify.notice({
+                    title: 'Thông báo',
+                    text: 'Xác nhận liên hệ ' + kh + ' ?',
+                    icon: 'fa fa-question-circle',
+                    width: '360px',
+                    minHeight: '110px',
+                    hide: false,
+                    closer: false,
+                    sticker: false,
+                    destroy: true,
+                    stack: new PNotify.Stack({
+                        dir1: 'down',
+                        modal: true,
+                        firstpos1: 25,
+                        overlayClose: false
+                    }),
+                    modules: new Map([
+                        ...PNotify.defaultModules,
+                        [PNotifyConfirm, {
+                            confirm: true
+                        }]
+                    ])
+                });
+
+                notice.on('pnotify:confirm', () =>
+                    $.ajax({
+                        data: { ID: $(this).data('id') },
+                        url: '/LienHe/ChangeStatus',
+                        dataType: 'Json',
+                        type: 'POST',
+                        success: function (res) {
+                            if (res.status == true) {
+                                PNotify.success({
+                                    title: 'THÔNG BÁO!!',
+                                    text: 'Xác nhận liên hệ thành công.'
+                                });
+                                 setTimeout(function () {
+                                    window.location.href = "/lienhe/danhsach";
+                                }, 2000);
+                            }
+                        }
+                    })
+
+                );
+                //notice.on('pnotify:cancel', () => alert('Oh ok. Chicken, I see.'));
+
+            });
+        });
+
+    </script>
+
+}

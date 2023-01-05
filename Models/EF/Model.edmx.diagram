@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="0dc75cab27464c51919680d288ae0d06" Name="Diagram1">
+        <EntityTypeShape EntityType="AutoGaraModel.ChiTietPSC" Width="1.5" PointX="7.5" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="AutoGaraModel.CTPhieuNhap" Width="1.5" PointX="10.5" PointY="12.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="AutoGaraModel.HieuXe" Width="1.5" PointX="0.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AutoGaraModel.LienHe" Width="1.5" PointX="0.75" PointY="9.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="AutoGaraModel.NhaCungCap" Width="1.5" PointX="6" PointY="18.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AutoGaraModel.NhanVien" Width="1.5" PointX="6" PointY="13.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="AutoGaraModel.PhanQuyen" Width="1.5" PointX="3.75" PointY="14.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="AutoGaraModel.PhieuNhap" Width="1.5" PointX="8.25" PointY="14.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="AutoGaraModel.PhieuSuaChua" Width="1.5" PointX="5.25" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="AutoGaraModel.PhieuThuTien" Width="1.5" PointX="5.25" PointY="7" IsExpanded="true" />
+        <EntityTypeShape EntityType="AutoGaraModel.sysdiagram" Width="1.5" PointX="0.75" PointY="1.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="AutoGaraModel.TienCong" Width="1.5" PointX="5.25" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AutoGaraModel.TiepNhanXe" Width="1.5" PointX="8.25" PointY="7.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="AutoGaraModel.VTPT" Width="1.5" PointX="5.25" PointY="10.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="AutoGaraModel.Xe" Width="1.5" PointX="3" PointY="4.875" IsExpanded="true" />
+        <AssociationConnector Association="AutoGaraModel.FK_ChiTietPSC_PhieuSuaChua" ManuallyRouted="false" />
+        <AssociationConnector Association="AutoGaraModel.FK_ChiTietPSC_TienCong" ManuallyRouted="false" />
+        <AssociationConnector Association="AutoGaraModel.FK_ChiTietPSC_VTPT" ManuallyRouted="false" />
+        <AssociationConnector Association="AutoGaraModel.FK_CTPhieuNhap_PhieuNhap" ManuallyRouted="false" />
+        <AssociationConnector Association="AutoGaraModel.FK_CTPhieuNhap_VTPT" ManuallyRouted="false" />
+        <AssociationConnector Association="AutoGaraModel.FK_Xe_HieuXe" ManuallyRouted="false" />
+        <AssociationConnector Association="AutoGaraModel.FK_PhieuNhap_NhaCungCap" ManuallyRouted="false" />
+        <AssociationConnector Association="AutoGaraModel.FK_PhieuNhap_TaiKhoanNhanVien" ManuallyRouted="false" />
+        <AssociationConnector Association="AutoGaraModel.FK_TaiKhoanNhanVien_PhanQuyen" ManuallyRouted="false" />
+        <AssociationConnector Association="AutoGaraModel.FK_TiepNhanXe_TaiKhoanNhanVien" ManuallyRouted="false" />
+        <AssociationConnector Association="AutoGaraModel.FK_PhieuSuaChua_Xe" ManuallyRouted="false" />
+        <AssociationConnector Association="AutoGaraModel.FK_PhieuThuTien_Xe" ManuallyRouted="false" />
+        <AssociationConnector Association="AutoGaraModel.FK_TiepNhanXe_Xe" ManuallyRouted="false" />
+        <AssociationConnector Association="AutoGaraModel.FK_PhieuSuaChua_NhanVien" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

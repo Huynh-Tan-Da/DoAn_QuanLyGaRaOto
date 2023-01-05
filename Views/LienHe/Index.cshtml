@@ -1,0 +1,182 @@
+﻿
+@{
+    ViewBag.Title = "Liên hệ";
+    Layout = "~/Views/Home/_Layout.cshtml";
+}
+
+<section class="contact_section layout_padding">
+    <div class="container">
+        <div class="row">
+            @if (TempData["success"] != null)
+            {
+                <div class="alert alert-success text-center" id="AlertBox">
+                    @TempData["success"]
+                </div>
+            }
+            <div class="col-md-5">
+                <div class="form_container">
+                    <div class="heading_container">
+                        <h2>
+                            Đặt lịch sửa chữa <br /> Liên hệ
+                        </h2>
+                    </div>
+                    @using (Html.BeginForm("frmContact", "LienHe", FormMethod.Post, new { id = "frmValidate" }))
+                    {
+                        <div>
+                            <input type="text" placeholder="Họ và tên" name="HoTen" />
+                        </div>
+                        <div>
+                            <input type="text" placeholder="Email" name="Email" />
+                        </div>
+                        <div>
+                            <input type="text" placeholder="Số điện thoại" name="SDT" />
+                        </div>
+
+                        <div class="form-group">
+                            <div class='input-group date' id='datetimepicker1'>
+                                <input type='text' class="form-control" placeholder="Ngày giờ đặt lịch" name="NgayDat" />
+                                <span class="input-group-addon">
+                                    <i class="fa fa-calendar" aria-hidden="true"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div>
+                            <input type="text" class="message-box" placeholder="Nội dung liên hệ" name="NoiDung" />
+                        </div>
+                        <div class="d-flex ">
+                            <button type="submit">
+                                Gửi
+                            </button>
+                        </div>
+                    }
+
+                </div>
+            </div>
+            <div class="col-md-7">
+                <div class="img-box">
+                    <img src="~/Assets/Client/images/contact-img.jpg" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="map_section">
+    <div class="map_container">
+        <div class="map">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7837.303627326493!2d106.70834025183014!3d10.837935433053579!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752903646fc6f9%3A0x2fc27ee6cb25153d!2sAuto365.vn!5e0!3m2!1svi!2s!4v1669255056815!5m2!1svi!2s" width="1800" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+    </div>
+</section>
+
+<section class="info_section ">
+    <div class="info_container ">
+        <div class="container">
+            <div class="info_contact ">
+                <a href="#" class="link-box">
+                    <i class="fa fa-map-marker" aria-hidden="true"></i>
+                    <span>
+                        Địa chỉ: 4/4/1/7 Đường số 3, Thành phố Thủ Đức, TP. Hồ Chí Minh
+                    </span>
+                </a>
+                <a href="#" class="link-box">
+                    <i class="fa fa-phone" aria-hidden="true"></i>
+                    <span>
+                        SĐT: 0363.365.365
+                    </span>
+                </a>
+                <a href="#" class="link-box">
+                    <i class="fa fa-envelope" aria-hidden="true"></i>
+                    <span>
+                        E-mail: info@autogara.vn
+                    </span>
+                </a>
+            </div>
+            <div class="social_container">
+                <div class="heading_container heading_center">
+                    <h2>
+                        AutoGara
+                    </h2>
+                    <p class="col-md-6 col-lg-5 mx-auto px-0">
+                        Sở hữu tổ hợp siêu Garage hiện đại với diện tích trên 800m², hơn 88+ chi nhánh trên toàn quốc,
+                        đội ngũ chuyên viên kỹ thuật lành nghề và là nơi duy nhất tại Việt Nam cải tiến công nghệ độ xe hơi theo tiêu chuẩn nước ngoài.
+                    </p>
+                </div>
+                <div class="social-box">
+                    <a href="#">
+                        <i class="fa fa-facebook" aria-hidden="true"></i>
+                    </a>
+                    <a href="#">
+                        <i class="fa fa-twitter" aria-hidden="true"></i>
+                    </a>
+                    <a href="#">
+                        <i class="fa fa-instagram" aria-hidden="true"></i>
+                    </a>
+                    <a href="#">
+                        <i class="fa fa-youtube" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section jsSection{
+
+    <script>
+        $(function () {
+
+            $('#datetimepicker1').datetimepicker({
+                todayHighlight: true,
+                format: 'hh:ii dd-mm-yyyy',
+                //language: 'vi',
+                startDate: '+1d',
+                autoclose: true
+            });
+
+            jQuery.validator.addMethod("phonenu", function (value, element) {
+                if (/^(09[0-9]|07[0|6|7|8|9]|03[2-9]|08[1-5])+([0-9]{7})\b/g.test(value)) {
+                    return true;
+                } else {
+                    return false;
+                };
+            }, "Invalid phone number");
+
+            jQuery.validator.addMethod("emailreg", function (value, element) {
+                if (/^[\w-\.]+@@([\w-]+\.)+[\w-]{2,4}$/g.test(value)) {
+                    return true;
+                } else {
+                    return false;
+                };
+            }, "Invalid email");
+            //Khi bàn phím được nhấn và thả ra thì sẽ chạy phương thức này
+            $("#frmValidate").validate({
+                rules: {
+                    NgayDat: "required",
+                    HoTen: "required",
+                    Phone: {
+                        required: true,
+                        phonenu: true
+                    },
+                    Email: {
+                        required: true,
+                        emailreg: true
+                    }
+                },
+                messages: {
+                    NgayDat: "Vui lòng chọn ngày đặt lịch",
+                    HoTen: "Vui lòng nhập họ và tên",
+                    Phone: {
+                        required: "Vui lòng nhập số điện thoại",
+                        phonenu: "Số điện thoại không hợp lệ"
+                    },
+                    Email: {
+                        required: "Vui lòng nhập email",
+                        emailreg: "Email không hợp lệ"
+                    }
+                }
+            });
+        });
+
+    </script>
+
+}

@@ -1,0 +1,389 @@
+﻿@using QuanLyGaraOto.Models.EF;
+@{
+    ViewBag.Title = "Tiếp nhận xe";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int dem = 1;
+    var lstHieuXe = ViewBag.lstHieuXe as List<HieuXe>;
+    var lstNhanVien = ViewBag.lstNhanVien as List<NhanVien>;
+    var nv = Session["nhanvien"] as NhanVien;
+}
+@model List<TiepNhanXe>
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Tiếp nhận xe
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="/"><i class="fa fa-dashboard"></i>Trang chủ</a></li>
+            <li class="active">Tiếp nhận xe</li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            @if (TempData["add_success"] != null)
+            {
+                <div class="alert alert-success text-center" id="AlertBox">
+                    @TempData["add_success"]
+                </div>
+            }
+        </div>
+        <div class="row">
+            <div class="col-md-4" style="margin-bottom: 10px">
+                <button class="btn btn-lg btn-primary" data-toggle="modal" data-target="#add">Thêm mới </button>
+            </div>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title text-center text-uppercase" id="exampleModalLabel">Tiếp nhận xe mới</h3>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="title-mod">Nhân viên tiếp nhận: <b>@nv.Ten</b></p>
+                        <p class="title-mod">Ngày tiếp nhận: <b>@(DateTime.Now.ToString("dd-MM-yyyy"))</b></p>
+                        @using (Html.BeginForm("frmAdd", "Xe", FormMethod.Post, new { enctype = "multipart/form-data", id = "frmAdd" }))
+                        {
+                            <input type="hidden" name="IDTK" value="@nv.IDTK">
+                            <div class="form-group col-sm-6">
+                                <label for="recipient-name" class="col-form-label">Chủ xe:</label>
+                                <input type="text" name="TenChuXe" class="form-control" required>
+                            </div>
+                            <div class="form-group col-sm-3">
+                                <label for="recipient-name" class="col-form-label">Hiệu xe:</label>
+                                <select class="form-control" name="IDHieuXe">
+                                    <option value="">---Chọn---</option>
+                                    @foreach (var item in lstHieuXe)
+                                    {
+
+                                        <option value="@item.IDHieuXe">@item.HieuXe1</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-group col-sm-3">
+                                <label for="recipient-name" class="col-form-label">Biển số:</label>
+                                <input type="text" name="BienSo" class="form-control" required placeholder="VD: 82A 12345 or 82B 1234">
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="recipient-name" class="col-form-label">Email:</label>
+                                <input type="text" name="Email" class="form-control" required>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="recipient-name" class="col-form-label">Số điện thoại:</label>
+                                <input type="text" name="SDT" class="form-control" required>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="recipient-name" class="col-form-label">Địa chỉ:</label>
+                                <input type="text" name="DiaChi" class="form-control" required>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="recipient-name" class="col-form-label">Nhân viên sửa chữa:</label>
+                                <select class="form-control" name="NV_SC">
+                                    <option value="">---Chọn---</option>
+                                    @foreach (var item in lstNhanVien)
+                                    {
+                                        <option value="@item.IDTK">@item.Ten</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-group text-center">
+                                <button type="submit" class="btn btn-primary btn-lg">Thêm mới</button>
+                            </div>
+                        }
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title">Danh sách xe đang sửa chữa</h3>
+                    </div><!-- /.box-header -->
+                    <div class="box-body">
+                        <table id="tblData" class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">#</th>
+                                    <th class="text-center">Nhân viên tiếp nhận</th>
+                                    <th class="text-center">Thông tin xe</th>
+                                    <th class="text-center">Thông tin chủ xe</th>
+                                    <th class="text-center">Tiền nợ</th>
+                                    <th class="text-center">Trạng thái</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+
+                                    <tr>
+                                        <td class="text-center">@dem</td>
+                                        <td>
+                                            <p>NV tiếp nhận: <b>@item.NhanVien.Ten</b></p>
+                                            <p>Ngày tiếp nhận: <b>@item.NgayTiepNhan.ToString("dd-MM-yyyy")</b></p>
+                                            <p>NV sửa chữa: <b>@item.Xe.PhieuSuaChuas.FirstOrDefault(x => x.IDXe == item.Xe.IDXe).NhanVien.Ten</b></p>
+                                            <p>Ngày sửa chữa: <b>@item.Xe.PhieuSuaChuas.FirstOrDefault(x => x.IDXe == item.Xe.IDXe).NgaySuaChua.ToString("dd-MM-yyyy")</b></p>
+                                        </td>
+                                        <td>
+                                            <p>Nhãn hiệu: <b>@item.Xe.HieuXe.HieuXe1</b></p>
+                                            <p>Biển số: <b>@item.Xe.BienSo</b></p>
+                                        </td>
+                                        <td>
+                                            <p>Chủ xe: <b>@item.Xe.TenChuXe</b></p>
+                                            <p>Địa chỉ: <b>@item.Xe.DiaChi</b></p>
+                                            <p>Số điện thoại: <b>@item.Xe.SDT</b></p>
+                                        </td>
+                                        <td class="text-center">@item.Xe.TienNo</td>
+                                        <td class="text-center">
+                                            @if (item.TrangThai == 0)
+                                            {
+                                                <span class="label label-default">Đã tiếp nhận</span>
+                                            }
+                                            else if (item.TrangThai == 1)
+                                            {
+                                                <span class="label label-warning">Đang sửa chữa</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            <a class="btn btn-primary" href="/xe/detail/@item.IDTN" >Xem chi tiết</a>
+                                            <button class="btn btn-default btnEdit" data-id="@item.IDTN" title="Chỉnh sửa tiếp nhận"><i class="fa fa-edit"></i></button>
+                                        </td>
+                                    </tr>
+                                    dem++;
+                                }
+
+                            </tbody>
+
+                        </table>
+                    </div><!-- /.box-body -->
+                </div><!-- /.box -->
+
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </section><!-- /.content -->
+</div>
+<!-- Modal -->
+<div class="modal fade edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center text-uppercase" id="exampleModalLabel">Cập nhật thông tin tiếp nhận xe</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="title-mod">Nhân viên tiếp nhận: <b id="TKTN"></b></p>
+                <p class="title-mod">Ngày tiếp nhận: <b id="NgayTiepNhan"></b></p>
+                @using (Html.BeginForm("frmEdit", "Xe", FormMethod.Post, new { enctype = "multipart/form-data", id = "frmEdit" }))
+                {
+                    <input type="hidden" name="IDXe" id="IDXe" />
+                    <div class="form-group col-sm-6">
+                        <label for="recipient-name" class="col-form-label">Chủ xe:</label>
+                        <input type="text" name="TenChuXe" id="TenChuXe" class="form-control" required>
+                    </div>
+                    <div class="form-group col-sm-3">
+                        <label for="recipient-name" class="col-form-label">Hiệu xe:</label>
+                        <select class="form-control" name="IDHieuXe" id="IDHieuXe">
+                            <option value="">---Chọn---</option>
+                            @foreach (var item in lstHieuXe)
+                            {
+
+                                <option value="@item.IDHieuXe">@item.HieuXe1</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group col-sm-3">
+                        <label for="recipient-name" class="col-form-label">Biển số:</label>
+                        <input type="text" name="BienSo" id="BienSo" class="form-control" required placeholder="VD: 82A 12345 or 82B 1234">
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label for="recipient-name" class="col-form-label">Email:</label>
+                        <input type="text" name="Email" id="Email" class="form-control" required>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label for="recipient-name" class="col-form-label">Số điện thoại:</label>
+                        <input type="text" name="SDT" id="SDT" class="form-control" required>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label for="recipient-name" class="col-form-label">Địa chỉ:</label>
+                        <input type="text" name="DiaChi" id="DiaChi" class="form-control" required>
+                    </div>
+                    @*<div class="form-group col-sm-6">
+                        <label for="recipient-name" class="col-form-label">Nhân viên sửa chữa:</label>
+                        <select class="form-control" id="NV_SC" name="NV_SC">
+                            <option value="">---Chọn---</option>
+                            @foreach (var item in lstNhanVien)
+                            {
+
+                                <option value="@item.IDTK">@item.Ten</option>
+                            }
+                        </select>
+                    </div>*@
+                    <div class="form-group text-center">
+                        <button type="submit" class="btn btn-lg btn-primary">Cập nhật</button>
+                    </div>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section jsSection{
+
+    <script>
+        $(function () {
+            $("#tblData").DataTable();
+            //nếu không có thao tác gì thì ẩn đi
+            $('#AlertBox').removeClass('hide');
+
+            //Sau khi hiển thị lên thì delay 1s và cuộn lên trên sử dụng slideup
+            $('#AlertBox').delay(2000).slideUp(500);
+
+
+            $('.btnEdit').click(function (event) {
+                $('.edit').modal('show');
+                //alert($(this).data('id'));
+                var ID = $(this).data('id');
+                $.ajax({
+                    url: "/Xe/GetByID/" + ID,
+                    type: 'GET',
+                    dataType: 'json',
+                    contentType: "application/json; charset=utf-8",
+                    success: function (res) {
+                        $('#BienSo').val(res.BienSo.trim());
+                        $('select#IDHieuXe').val(res.IDHieuXe);
+                        //$('select#NV_SC').val(res.NV_SC);
+                        $('#TenChuXe').val(res.TenChuXe);
+                        $('#DiaChi').val(res.DiaChi);
+                        $('#SDT').val(res.SDT);
+                        $('#IDXe').val(res.IDXe);
+
+                        $('#NgayTiepNhan').text(res.NgayTiepNhan);
+                        $('#TKTN').text(res.TenNhanvien);
+                    }
+                });
+            });
+
+            $.validator.addMethod("select_validate", function (value, element, arg) {
+                return arg !== value;
+            }, "Value must not equal arg.");
+
+             jQuery.validator.addMethod("phonenu", function (value, element) {
+                if (/^(09[0-9]|07[0|6|7|8|9]|03[2-9]|08[1-5])+([0-9]{7})\b/g.test(value)) {
+                    return true;
+                } else {
+                    return false;
+                };
+             }, "Invalid phone number");
+            jQuery.validator.addMethod("plate_validate", function (value, element) {
+                if (/^[1-9][1-9][A-Y]\s([0-9]{4,5})$/g.test(value)) {
+                    return true;
+                } else {
+                    return false;
+                };
+            }, "Invalid license plate");
+             jQuery.validator.addMethod("emailreg", function (value, element) {
+                if (/^[\w-\.]+@@([\w-]+\.)+[\w-]{2,4}$/g.test(value)) {
+                    return true;
+                } else {
+                    return false;
+                };
+            }, "Invalid email");
+             //Khi bàn phím được nhấn và thả ra thì sẽ chạy phương thức này
+            $("#frmAdd").validate({
+                rules: {
+                    BienSo: {
+                        required: true,
+                        plate_validate: true
+                    },
+                    DiaChi: "required",
+                    TenChuXe: "required",
+                    SDT: {
+                        required: true,
+                        phonenu: true
+                    },
+                    Email: {
+                        required: true,
+                        emailreg: true
+                    },
+                    IDHieuXe: { select_validate: "" },
+                    NV_SC: { select_validate: "" }
+                },
+                messages: {
+                    BienSo: {
+                        required: "Vui lòng nhập biển số",
+                        plate_validate: "Biển số xe không hợp lệ"
+                    },
+                    DiaChi: "Vui lòng nhập địa chỉ",
+                    TenChuXe: "Vui lòng nhập tên chủ xe",
+                    SDT: {
+                        required: "Vui lòng nhập số điện thoại",
+                        phonenu: "Số điện thoại không hợp lệ"
+                    },
+                    Email: {
+                        required: "Vui lòng nhập email",
+                        emailreg: "Email không hợp lệ"
+                    },
+                    IDHieuXe: { select_validate: "Bạn chưa chọn hiệu xe!" },
+                    NV_SC: { select_validate: "Bạn chưa chọn nhân viên sửa chữa!" }
+                }
+            });
+
+            $("#frmEdit").validate({
+                rules: {
+                    BienSo: {
+                        required: true,
+                        plate_validate: true
+                    },
+                    DiaChi: "required",
+                    TenChuXe: "required",
+                    SDT: {
+                        required: true,
+                        phonenu: true
+                    },
+                    Email: {
+                        required: true,
+                        emailreg: true
+                    },
+                    IDHieuXe: { select_validate: "" },
+                    //NV_SC: { select_validate: "" }
+                },
+                messages: {
+                    BienSo: {
+                        required: "Vui lòng nhập biển số",
+                        plate_validate: "Biển số xe không hợp lệ"
+                    },
+                    DiaChi: "Vui lòng nhập địa chỉ",
+                    TenChuXe: "Vui lòng nhập tên chủ xe",
+                    SDT: {
+                        required: "Vui lòng nhập số điện thoại",
+                        phonenu: "Số điện thoại không hợp lệ"
+                    },
+                    Email: {
+                        required: "Vui lòng nhập email",
+                        emailreg: "Email không hợp lệ"
+                    },
+                    IDHieuXe: { select_validate: "Bạn chưa chọn hiệu xe!" },
+                    //NV_SC: { select_validate: "Bạn chưa chọn nhân viên sửa chữa!" }
+                }
+            });
+        });
+
+    </script>
+
+}

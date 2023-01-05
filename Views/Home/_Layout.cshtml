@@ -1,0 +1,127 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Basic -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <!-- Site Metas -->
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <link rel="shortcut icon" href="~/Assets/Client/images/favicon.png" type="image/x-icon">
+    <title>@ViewBag.Title | AutoGara</title>
+
+    <!-- bootstrap core css -->
+    <link rel="stylesheet" type="text/css" href="~/Assets/Client/css/bootstrap.css" />
+    <!--owl slider stylesheet -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+    <!-- font awesome style -->
+    <link href="~/Assets/Client/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Assets/Client/bootstrap-datepicker/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <!-- Custom styles for this template -->
+    <link href="~/Assets/Client/css/style.css" rel="stylesheet" />
+    <!-- responsive style -->
+    <link href="~/Assets/Client/css/responsive.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div class="hero_area">
+        <!-- header section strats -->
+        <header class="header_section">
+            <div class="container">
+                <nav class="navbar navbar-expand-lg custom_nav-container px-0">
+                    <a class="navbar-brand" href="index.html">
+                        <span>
+                            AutoGara
+                        </span>
+                    </a>
+                    <div class="contact_nav" id="">
+                        <a class="nav-link" href="">
+                            <i class="fa fa-map-marker" aria-hidden="true"></i>
+                            Địa chỉ: 4/4/1/7 Đường số 3, TP Thủ Đức - HCM
+                        </a>
+                        <a class="nav-link" href="">
+                            <i class="fa fa-phone" aria-hidden="true"></i>
+                            <span>SĐT :  0363.365.365</span>
+                        </a>
+                        <a class="nav-link" href="">
+                            <i class="fa fa-envelope" aria-hidden="true"></i>
+                            <span>E-mail: info@autogara.vn</span>
+                        </a>
+                    </div>
+                </nav>
+            </div>
+        </header>
+        <!-- end header section -->
+        <!-- slider section -->
+        <section>
+            <div class="custom_nav2">
+                <div class="container">
+                    <nav class="navbar navbar-expand-lg custom_nav-container ">
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <div class="d-flex  flex-column flex-lg-row align-items-center">
+                                <ul class="navbar-nav">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/">Trang chủ</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/home/about">Giới thiệu </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/home/service">Dịch vụ </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/home/team">Đội ngũ</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/lienhe">Liên hệ</a>
+                                    </li>
+                                </ul>
+
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </section>
+        <!-- end slider section -->
+    </div>
+
+    @RenderBody()
+
+    <!-- footer section -->
+    <footer class="footer_section">
+        <div class="container">
+            <p>
+                &copy; <span id="displayYear"></span> All Rights Reserved By
+                <a href="https://html.design/">Free Html Templates</a>
+            </p>
+        </div>
+    </footer>
+    <!-- footer section -->
+    <!-- jQery -->
+    <script src="~/Assets/Client/js/jquery-3.4.1.min.js"></script>
+    <!-- popper js -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <!-- bootstrap js -->
+    <script src="~/Assets/Client/js/bootstrap.js"></script>
+    <script src="~/Assets/Client/bootstrap-datepicker/bootstrap-datetimepicker.min.js"></script>
+    <script src="~/Assets/Client/bootstrap-datepicker/bootstrap-datepicker.vi.js"></script>
+    <!-- owl slider -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <!-- custom js -->
+    <script src="~/Assets/Client/js/custom.js"></script>
+    <!-- Google Map -->
+    @*<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap"></script>*@
+    <!-- End Google Map -->
+    @RenderSection("jsSection", required: false)
+</body>
+
+</html>

@@ -1,0 +1,98 @@
+﻿@using QuanLyGaraOto.Models.EF;
+@{
+    ViewBag.Title = "Chi tiết nhập kho";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int dem_1 = 1;
+    var lstCT = ViewBag.lstCT as List<CTPhieuNhap>;
+    var pn = ViewBag.PhieuNhap as PhieuNhap;
+}
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Chi tiết nhập kho
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="/"><i class="fa fa-dashboard"></i>Trang chủ</a></li>
+            <li><a href="/nhapkho/index">Nhật ký nhập kho</a></li>
+            <li class="active">Chi tiết nhập kho</li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            @if (TempData["add_success"] != null)
+            {
+                <div class="alert alert-success text-center" id="AlertBox">
+                    @TempData["add_success"]
+                </div>
+            }
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                        <p><h3 class="box-title">Nhân viên nhập: <b>@pn.TaiKhoanNhanVien.ThongTinNV.Ten</b></h3></p>
+                        <p><h3 class="box-title">Ngày nhập: <b>@pn.NgayNhap.ToString("dd-MM-yyyy")</b></h3></p>
+                        <p><h3 class="box-title">Nhà cung cấp: <b>@pn.NhaCungCap.Ten</b></h3></p>
+                    </div><!-- /.box-header -->
+                    <div class="box-body">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">#</th>
+                                    <th class="text-center">Vật tư & phụ tùng</th>
+                                    <th class="text-center">Số lượng</th>
+                                    <th class="text-center">Đơn giá (đ)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in lstCT)
+                                {
+                                    <tr>
+                                        <td class="text-center">@dem_1</td>
+                                        <td class="text-center">@item.VTPT.Ten</td>
+                                        <td class="text-center">@item.SoLuong</td>
+                                        <td class="text-center">@item.DonGiaNhap.ToString("N0")</td>
+                                    </tr>
+                                    dem_1++;
+                                }
+                                <tr>
+                                    <td colspan="2"></td>
+                                    <td class="text-right" style="font-size: 20px; font-weight: bold">Tổng số lượng: </td>
+                                    <td class="text-center" style="color: red; font-size: 20px; font-weight: bold">@pn.TongSL</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"></td>
+                                    <td class="text-right" style="font-size: 20px; font-weight: bold">Tổng tiền (vnđ): </td>
+                                    <td class="text-center" style="color: red; font-size: 20px; font-weight: bold">@pn.TongTien.Value.ToString("N0")</td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+                    </div><!-- /.box-body -->
+                </div><!-- /.box -->
+
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </section><!-- /.content -->
+</div>
+
+@section jsSection{
+
+    <script>
+        $(function () {
+            $("#tblData_1").DataTable();
+            $("#tblData_2").DataTable();
+            //nếu không có thao tác gì thì ẩn đi
+            $('#AlertBox').removeClass('hide');
+
+            //Sau khi hiển thị lên thì delay 1s và cuộn lên trên sử dụng slideup
+            $('#AlertBox').delay(2000).slideUp(500);
+        });
+
+    </script>
+
+}
